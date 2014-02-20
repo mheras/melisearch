@@ -16,7 +16,7 @@ import retrofit.converter.JacksonConverter;
  */
 public class MeliSearchSpiceService extends RetrofitJackson2SpiceService implements RequestInterceptor {
 
-    private static final String BASE_URL = "https://api.mercadolibre.com";
+    private static final String BASE_URL = "https://mobile.mercadolibre.com.ar";
 
     @Override
     protected Converter createConverter() {

@@ -30,6 +30,6 @@ public class FindItemRequest extends RetroSpiceRequest<Item, ItemAPI> {
     @Override
     public long getCacheExpiryDurationInMilliseconds() {
         // TODO: Remove this method
-        return DurationInMillis.ALWAYS_RETURNED;
+        return DurationInMillis.ALWAYS_EXPIRED;
     }
 }

@@ -22,13 +22,14 @@ import java.net.URL;
 /**
  * Created by Martin A. Heras on 12/02/14.
  */
-public class DetailsFragment extends SpiceFragment implements Repository.FindCallbacks<Item, String> {
+public class DetailsFragment extends SpiceFragment implements Repository.FindCallbacks<Item, String>, ViewPager.OnPageChangeListener {
 
     private static final String ITEM_ID = "com.mercadolibre.melisearch.DetailsFragment.ITEM_ID";
     private static final String ITEM_INSTANCE_STATE_KEY = "item";
     private ItemRepository mItemRepository;
     private Item mItem;
     private PicturesAdapter mPicturesAdapter;
+    private ViewPager mPicturesViewPager;
 
     public static DetailsFragment newInstance(String itemId) {
         Bundle args = new Bundle();
@@ -45,9 +46,11 @@ public class DetailsFragment extends SpiceFragment implements Repository.FindCal
         mItemRepository = new ItemRepository(mSpiceManager);
         mItemRepository.setFindCallbacks(this);
 
-        ViewPager picturesViewPager = (ViewPager)getView().findViewById(R.id.details_pictures_view_pager);
+        mPicturesViewPager = (ViewPager)getView().findViewById(R.id.details_pictures_view_pager);
+        mPicturesViewPager.setOnPageChangeListener(this);
+
         mPicturesAdapter = new PicturesAdapter();
-        picturesViewPager.setAdapter(mPicturesAdapter);
+        mPicturesViewPager.setAdapter(mPicturesAdapter);
 
         if (savedInstanceState == null) {
             String itemId = getArguments().getString(ITEM_ID);
@@ -92,6 +95,19 @@ public class DetailsFragment extends SpiceFragment implements Repository.FindCal
         Log.i("onFindFail", id);
     }
 
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        mPicturesViewPager.getParent().requestDisallowInterceptTouchEvent(true);
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+    }
+
     private class PicturesAdapter extends PagerAdapter {
 
         @Override
@@ -116,7 +132,7 @@ public class DetailsFragment extends SpiceFragment implements Repository.FindCal
             imageView.post(new Runnable() {
                 @Override
                 public void run() {
-                    URL pictureUrl = mItem.getPictures().get(position).getUrl();
+                    URL pictureUrl = mItem.getPictures().get(position);
                     Picasso.with(getActivity()).load(pictureUrl != null ? pictureUrl.toString() : null).placeholder(R.drawable.placeholder).resize(imageView.getWidth(), imageView.getHeight()).centerCrop().into(imageView);
                 }
             });

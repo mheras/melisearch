@@ -30,6 +30,6 @@ public class SearchItemRequest extends RetroSpicePaginatorRequest<ItemPaginatedR
 
     @Override
     public long getCacheExpiryDurationInMilliseconds() {
-        return DurationInMillis.ALWAYS_RETURNED;
+        return DurationInMillis.ALWAYS_EXPIRED;
     }
 }

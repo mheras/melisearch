@@ -18,7 +18,7 @@ public class Item implements Serializable {
     private int mAvailableQuantity;
     private int mSoldQuantity;
     private URL mThumbnail;
-    private List<ItemPicture> mPictures;
+    private List<URL> mPictures;
 
     public String getId() {
         return mId;
@@ -84,11 +84,11 @@ public class Item implements Serializable {
         this.mThumbnail = thumbnail;
     }
 
-    public List<ItemPicture> getPictures() {
+    public List<URL> getPictures() {
         return mPictures;
     }
 
-    public void setPictures(List<ItemPicture> pictures) {
+    public void setPictures(List<URL> pictures) {
         this.mPictures = pictures;
     }
 
