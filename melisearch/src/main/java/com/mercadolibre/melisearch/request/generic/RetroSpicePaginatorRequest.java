@@ -16,7 +16,7 @@ public abstract class RetroSpicePaginatorRequest<ResponseType, RetrofitAPIType> 
 
     @Override
     protected String getUniqueCacheKey() {
-        return new StringBuilder().append(mOffset).append("##").append(mLimit).toString();
+        return new StringBuilder().append(mOffset).append("#").append(mLimit).toString();
     }
 
 }

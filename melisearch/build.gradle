@@ -34,6 +34,8 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.0.0'
     compile 'com.squareup.retrofit:retrofit:1.4.1'
     compile 'com.squareup.retrofit:converter-jackson:1.4.1'
+    // We need OkHttp since retrofit has a bug when using HttpUrlConnection with HTTP-cached & GZIPed responses.
+    compile 'com.squareup.okhttp:okhttp:1.3.0'
     compile 'com.octo.android.robospice:robospice:1.4.11'
     compile 'com.octo.android.robospice:robospice-retrofit:1.4.11'
     compile 'com.android.support:support-v4:18.0.+'

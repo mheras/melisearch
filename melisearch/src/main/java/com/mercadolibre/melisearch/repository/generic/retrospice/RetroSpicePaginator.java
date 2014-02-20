@@ -6,6 +6,7 @@ import android.util.Log;
 import com.mercadolibre.melisearch.repository.generic.Paginator;
 import com.mercadolibre.melisearch.request.generic.RetroSpicePaginatorRequest;
 import com.octo.android.robospice.SpiceManager;
+import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
@@ -18,6 +19,9 @@ import java.util.List;
  * Created by Martin A. Heras on 13/02/14.
  */
 public class RetroSpicePaginator<ObjectType, RetrofitAPIType> implements Paginator<ObjectType> {
+
+    // TODO: We should think how to apply the cache duration based on the activity lifecycle and configuration changes... For the sake of this mini-project, we simply use the same duration over and over again.
+    private static final long CACHE_EXPIRY_DURATION = DurationInMillis.ONE_MINUTE;
 
     public static class RetroSpicePaginatorException extends RuntimeException {
         public RetroSpicePaginatorException(Throwable throwable) {
@@ -109,7 +113,7 @@ public class RetroSpicePaginator<ObjectType, RetrofitAPIType> implements Paginat
         }
 
         mLoadingPage = true;
-        mSpiceManager.execute(request, request.createCacheKey(), request.getCacheExpiryDurationInMilliseconds(), new PaginatorListener(this));
+        mSpiceManager.execute(request, request.createCacheKey(), CACHE_EXPIRY_DURATION, new PaginatorListener(this));
     }
 
     @Override

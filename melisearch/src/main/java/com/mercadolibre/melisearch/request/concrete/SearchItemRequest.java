@@ -19,17 +19,12 @@ public class SearchItemRequest extends RetroSpicePaginatorRequest<ItemPaginatedR
 
     @Override
     protected String getUniqueCacheKey() {
-        return new StringBuilder(super.getUniqueCacheKey()).append("##").append("MLA").append("##").append(mQuery).toString();
+        return new StringBuilder(super.getUniqueCacheKey()).append("#").append("MLA").append("#").append(mQuery).toString();
     }
 
     @Override
     public ItemPaginatedResponse loadDataFromNetwork() throws Exception {
         // TODO: Hardcoded site!
         return getService().search("MLA", mQuery, mOffset, mLimit);
-    }
-
-    @Override
-    public long getCacheExpiryDurationInMilliseconds() {
-        return DurationInMillis.ALWAYS_EXPIRED;
     }
 }

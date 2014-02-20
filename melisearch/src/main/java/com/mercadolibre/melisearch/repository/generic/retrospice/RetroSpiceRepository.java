@@ -6,15 +6,21 @@ import com.mercadolibre.melisearch.repository.generic.Paginator;
 import com.mercadolibre.melisearch.repository.generic.Repository;
 import com.mercadolibre.melisearch.request.generic.RetroSpiceRequest;
 import com.octo.android.robospice.SpiceManager;
+import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
 import java.lang.ref.WeakReference;
 
+import javax.xml.datatype.Duration;
+
 /**
  * Created by Martin A. Heras on 12/02/14.
  */
 public abstract class RetroSpiceRepository<ObjectType, ObjectIdType, RetrofitAPIType> implements Repository<ObjectType, ObjectIdType> {
+
+    // TODO: We should think how to apply the cache duration based on the activity lifecycle and configuration changes... For the sake of this mini-project, we simply use the same duration over and over again.
+    private static final long CACHE_EXPIRY_DURATION = DurationInMillis.ONE_MINUTE;
 
     // The SpiceManager that can be set after repository initialization.
     private SpiceManager mSpiceManager;
@@ -51,7 +57,7 @@ public abstract class RetroSpiceRepository<ObjectType, ObjectIdType, RetrofitAPI
             throw new NullPointerException(getClass().getSimpleName() + " does not support the 'find' operation. Implementation of 'createFindRequest' method cannot return null.");
         }
 
-        mSpiceManager.execute(request, request.createCacheKey(), request.getCacheExpiryDurationInMilliseconds(), new FindListener(id));
+        mSpiceManager.execute(request, request.createCacheKey(), CACHE_EXPIRY_DURATION, new FindListener(id));
     }
 
     @Override
