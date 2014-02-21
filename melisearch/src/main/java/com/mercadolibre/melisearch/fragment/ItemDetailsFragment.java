@@ -1,9 +1,8 @@
-package com.mercadolibre.melisearch.fragment.concrete;
+package com.mercadolibre.melisearch.fragment;
 
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mercadolibre.melisearch.R;
-import com.mercadolibre.melisearch.fragment.generic.SpiceFragment;
 import com.mercadolibre.melisearch.model.Item;
 import com.mercadolibre.melisearch.repository.concrete.ItemRepository;
 import com.mercadolibre.melisearch.repository.generic.Repository;
@@ -20,21 +18,21 @@ import com.squareup.picasso.Picasso;
 import java.net.URL;
 
 /**
- * Created by Martin A. Heras on 12/02/14.
+ * Created by Martin A. Heras on 21/02/14.
  */
-public class DetailsFragment extends SpiceFragment implements Repository.FindCallbacks<Item, String>, ViewPager.OnPageChangeListener {
+public class ItemDetailsFragment extends AbstractFragment implements Repository.FindCallbacks<Item, String>, ViewPager.OnPageChangeListener {
 
-    private static final String ITEM_ID = "com.mercadolibre.melisearch.DetailsFragment.ITEM_ID";
+    private static final String ITEM_ID = "ITEM_ID";
     private static final String ITEM_INSTANCE_STATE_KEY = "item";
     private ItemRepository mItemRepository;
     private Item mItem;
     private PicturesAdapter mPicturesAdapter;
     private ViewPager mPicturesViewPager;
 
-    public static DetailsFragment newInstance(String itemId) {
+    public static ItemDetailsFragment newInstance(String itemId) {
         Bundle args = new Bundle();
         args.putString(ITEM_ID, itemId);
-        DetailsFragment fragment = new DetailsFragment();
+        ItemDetailsFragment fragment = new ItemDetailsFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -46,7 +44,7 @@ public class DetailsFragment extends SpiceFragment implements Repository.FindCal
         mItemRepository = new ItemRepository(mSpiceManager);
         mItemRepository.setFindCallbacks(this);
 
-        mPicturesViewPager = (ViewPager)getView().findViewById(R.id.details_pictures_view_pager);
+        mPicturesViewPager = (ViewPager) getView().findViewById(R.id.details_pictures_view_pager);
         mPicturesViewPager.setOnPageChangeListener(this);
 
         mPicturesAdapter = new PicturesAdapter();
@@ -56,7 +54,7 @@ public class DetailsFragment extends SpiceFragment implements Repository.FindCal
             String itemId = getArguments().getString(ITEM_ID);
             mItemRepository.find(itemId);
         } else {
-            mItem = (Item)savedInstanceState.getSerializable(ITEM_INSTANCE_STATE_KEY);
+            mItem = (Item) savedInstanceState.getSerializable(ITEM_INSTANCE_STATE_KEY);
             updateUI();
         }
     }
@@ -70,7 +68,7 @@ public class DetailsFragment extends SpiceFragment implements Repository.FindCal
     private void updateUI() {
         if (mItem != null) {
             // Get all views.
-            TextView titleTextView = (TextView)getView().findViewById(R.id.details_title_text_view);
+            TextView titleTextView = (TextView) getView().findViewById(R.id.details_title_text_view);
 
             // Update views.
             titleTextView.setText(mItem.getTitle());
@@ -92,7 +90,7 @@ public class DetailsFragment extends SpiceFragment implements Repository.FindCal
 
     @Override
     public void onFindFail(String id) {
-        Log.i("onFindFail", id);
+        // TODO: Implement this method.
     }
 
     @Override
@@ -142,7 +140,7 @@ public class DetailsFragment extends SpiceFragment implements Repository.FindCal
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView((ImageView)object);
+            container.removeView((ImageView) object);
         }
     }
 }

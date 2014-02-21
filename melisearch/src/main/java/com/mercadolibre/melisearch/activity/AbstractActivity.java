@@ -1,16 +1,16 @@
-package com.mercadolibre.melisearch.activity.generic;
+package com.mercadolibre.melisearch.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 
 import com.mercadolibre.melisearch.service.MeliSearchSpiceService;
 import com.octo.android.robospice.SpiceManager;
 
 /**
- * Created by Martin A. Heras on 12/02/14.
+ * Created by Martin A. Heras on 21/02/14.
  */
-public abstract class SpiceActivity extends Activity {
+public class AbstractActivity extends ActionBarActivity {
 
     private final SpiceManager mSpiceManager = new SpiceManager(MeliSearchSpiceService.class);
 
@@ -20,7 +20,7 @@ public abstract class SpiceActivity extends Activity {
 
         mSpiceManager.start(this);
 
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override

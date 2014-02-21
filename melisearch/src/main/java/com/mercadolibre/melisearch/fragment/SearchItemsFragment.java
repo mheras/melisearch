@@ -1,4 +1,4 @@
-package com.mercadolibre.melisearch.fragment.concrete;
+package com.mercadolibre.melisearch.fragment;
 
 import android.app.Activity;
 import android.content.Context;
@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 import com.mercadolibre.melisearch.R;
 import com.mercadolibre.melisearch.adapter.ItemsAdapter;
-import com.mercadolibre.melisearch.fragment.generic.SpiceFragment;
 import com.mercadolibre.melisearch.model.Item;
 import com.mercadolibre.melisearch.repository.concrete.ItemRepository;
 import com.mercadolibre.melisearch.repository.generic.Paginator;
@@ -25,15 +24,15 @@ import com.mercadolibre.melisearch.repository.generic.Paginator;
 import java.util.List;
 
 /**
- * Created by Martin A. Heras on 10/02/14.
+ * Created by Martin A. Heras on 21/02/14.
  */
-public class SearchResultsFragment extends SpiceFragment implements Paginator.Callbacks<Item> {
+public class SearchItemsFragment extends AbstractFragment implements Paginator.Callbacks<Item> {
 
     public static interface Listener {
         public void onSelectedItem(String itemId);
     }
 
-    private final static String SEARCH_CRITERIA = "com.mercadolibre.melisearch.SearchResultsFragment.SEARCH_CRITERIA";
+    private final static String SEARCH_CRITERIA = "SEARCH_CRITERIA";
 
     private ItemRepository mItemRepository;
     private Paginator<Item> mItemPaginator;
@@ -44,10 +43,10 @@ public class SearchResultsFragment extends SpiceFragment implements Paginator.Ca
     private Listener mListener;
     private ItemsAdapter mItemsAdapter;
 
-    public static SearchResultsFragment newInstance(String searchCriteria) {
+    public static SearchItemsFragment newInstance(String searchCriteria) {
         Bundle args = new Bundle();
         args.putString(SEARCH_CRITERIA, searchCriteria);
-        SearchResultsFragment fragment = new SearchResultsFragment();
+        SearchItemsFragment fragment = new SearchItemsFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -59,7 +58,7 @@ public class SearchResultsFragment extends SpiceFragment implements Paginator.Ca
         try {
             mListener = (Listener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException("Activity must implement Listener");
+            throw new ClassCastException("Activity must implement SearchItemsFragment.Listener");
         }
     }
 
@@ -209,6 +208,6 @@ public class SearchResultsFragment extends SpiceFragment implements Paginator.Ca
 
     @Override
     public void onPageLoadFail() {
-        // TODO: Implement this!
+        // TODO: Implement this method.
     }
 }

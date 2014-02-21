@@ -14,28 +14,19 @@
         <!-- Services -->
 
         <service
-            android:name=".service.MeliSearchSpiceService"
+            android:name="com.mercadolibre.melisearch.service.MeliSearchSpiceService"
             android:exported="false" />
 
         <!-- Activities -->
 
         <activity
-            android:name=".activity.concrete.SearchActivity"
-            android:label="@string/app_name">
+            android:name="com.mercadolibre.melisearch.activity.ItemsActivity"
+            android:label="@string/title_activity_items">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".activity.concrete.SearchResultsActivity"
-            android:label="@string/title_activity_search_results" />
-
-        <activity
-            android:name=".activity.concrete.DetailsActivity"
-            android:label="@string/title_activity_details" />
 
     </application>
 
