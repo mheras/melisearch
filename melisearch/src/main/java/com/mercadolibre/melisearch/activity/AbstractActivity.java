@@ -10,7 +10,7 @@ import com.octo.android.robospice.SpiceManager;
 /**
  * Created by Martin A. Heras on 21/02/14.
  */
-public class AbstractActivity extends ActionBarActivity {
+public abstract class AbstractActivity extends ActionBarActivity {
 
     private final SpiceManager mSpiceManager = new SpiceManager(MeliSearchSpiceService.class);
 

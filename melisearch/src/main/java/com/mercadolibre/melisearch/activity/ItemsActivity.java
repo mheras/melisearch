@@ -1,6 +1,7 @@
 package com.mercadolibre.melisearch.activity;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
@@ -41,11 +42,18 @@ public class ItemsActivity extends AbstractActivity implements SearchItemsFragme
     }
 
     private void search(String query) {
-        getSupportFragmentManager().beginTransaction().replace(R.id.template_container, SearchItemsFragment.newInstance(query.trim())).addToBackStack(null).commit();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.template_container, SearchItemsFragment.newInstance(query.trim()));
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     @Override
     public void onSelectedItem(String itemId) {
-        getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.template_container, ItemDetailsFragment.newInstance(itemId)).addToBackStack(null).commit();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
+        transaction.replace(R.id.template_container, ItemDetailsFragment.newInstance(itemId));
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }

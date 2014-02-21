@@ -9,7 +9,7 @@ import com.octo.android.robospice.SpiceManager;
 /**
  * Created by Martin A. Heras on 21/02/14.
  */
-public class AbstractFragment extends Fragment {
+public abstract class AbstractFragment extends Fragment {
 
     protected SpiceManager mSpiceManager;
 
