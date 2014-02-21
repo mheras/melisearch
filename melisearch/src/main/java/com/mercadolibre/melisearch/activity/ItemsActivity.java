@@ -9,6 +9,7 @@ import android.view.MenuItem;
 
 import com.mercadolibre.melisearch.R;
 import com.mercadolibre.melisearch.fragment.ItemDetailsFragment;
+import com.mercadolibre.melisearch.fragment.LogoFragment;
 import com.mercadolibre.melisearch.fragment.SearchItemsFragment;
 
 public class ItemsActivity extends AbstractActivity implements SearchItemsFragment.Listener {
@@ -17,18 +18,21 @@ public class ItemsActivity extends AbstractActivity implements SearchItemsFragme
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.template_container);
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().add(R.id.template_container, new LogoFragment()).commit();
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.items, menu);
-        MenuItem searchItem = menu.findItem(R.id.items_search);
+        final MenuItem searchItem = menu.findItem(R.id.items_search);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                MenuItemCompat.collapseActionView(searchItem);
                 search(query);
-                searchView.clearFocus();
                 return true;
             }
 
@@ -44,7 +48,7 @@ public class ItemsActivity extends AbstractActivity implements SearchItemsFragme
     private void search(String query) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.template_container, SearchItemsFragment.newInstance(query.trim()));
-        transaction.addToBackStack(null);
+        //transaction.addToBackStack(null);
         transaction.commit();
     }
 

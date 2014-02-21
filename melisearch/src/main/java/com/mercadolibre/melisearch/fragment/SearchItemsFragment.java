@@ -107,7 +107,7 @@ public class SearchItemsFragment extends AbstractFragment implements Paginator.C
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_search_results, container, false);
+        View view = inflater.inflate(R.layout.fragment_search_items, container, false);
 
         mItemsListView = (ListView) view.findViewById(R.id.items_list_view);
 
