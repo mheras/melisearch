@@ -1,30 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ProgressBar
-        android:id="@+id/search_progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />
-
-    <TextView
-        android:id="@+id/search_results_count_text_view"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/search_results_count"
-        android:textStyle="bold"
-        android:textColor="@android:color/white"
-        android:padding="10dp"
-        android:background="@android:color/holo_blue_dark" />
+        android:layout_height="match_parent">
 
-    <ListView
-        android:id="@+id/items_list_view"
+        <TextView
+            android:id="@+id/search_results_count_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/search_results_count"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:padding="10dp"
+            android:background="@color/light_blue" />
+
+        <ListView
+            android:id="@+id/items_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/search_results_count_text_view" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/search_results_count_text_view" />
+        android:id="@+id/search_progress_bar_container"
+        android:visibility="gone"
+        android:background="@android:color/white">
 
-</RelativeLayout>
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+
+    </RelativeLayout>
+
+</FrameLayout>

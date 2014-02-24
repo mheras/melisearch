@@ -1,9 +1,6 @@
 package com.mercadolibre.melisearch.fragment;
 
 import android.app.Activity;
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,9 +8,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mercadolibre.melisearch.R;
 import com.mercadolibre.melisearch.adapter.ItemsAdapter;
@@ -34,7 +29,6 @@ public class SearchItemsFragment extends AbstractFragment implements Paginator.C
 
     private final static String SEARCH_CRITERIA = "SEARCH_CRITERIA";
 
-    private ItemRepository mItemRepository;
     private Paginator<Item> mItemPaginator;
 
     private ListView mItemsListView;
@@ -72,17 +66,24 @@ public class SearchItemsFragment extends AbstractFragment implements Paginator.C
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        // Create the repository.
-        mItemRepository = new ItemRepository(mSpiceManager);
-
         // Create a paginator to search for items.
-        mItemPaginator = mItemRepository.search(getArguments().getString(SEARCH_CRITERIA));
+        if (mItemPaginator == null) {
+            mItemPaginator = new ItemRepository(mSpiceManager).search(getArguments().getString(SEARCH_CRITERIA));
+        }
 
         // Set the callbacks.
         mItemPaginator.setPaginatorCallbacks(this);
 
         if (savedInstanceState == null) {
-            mItemPaginator.loadNextPage();
+            if (mItemPaginator.getTotalCount() == Paginator.TOTAL_COUNT_UNKNOWN) {
+
+                // Make progress bar container appear.
+                View progressBarContainer = getView().findViewById(R.id.search_progress_bar_container);
+                progressBarContainer.setVisibility(View.VISIBLE);
+
+                // Load.
+                mItemPaginator.loadNextPage();
+            }
         } else {
             mItemPaginator.restoreInstanceState(savedInstanceState);
             updateSearchResultsCount(getView());
@@ -111,36 +112,25 @@ public class SearchItemsFragment extends AbstractFragment implements Paginator.C
 
         mItemsListView = (ListView) view.findViewById(R.id.items_list_view);
 
-        if (savedInstanceState == null) {
-
-            // Make list view invisible.
-            mItemsListView.setVisibility(View.INVISIBLE);
-
-            // Make the search results count text view invisible as well...
-            TextView searchResultsCountTextView = (TextView) view.findViewById(R.id.search_results_count_text_view);
-            searchResultsCountTextView.setVisibility(View.INVISIBLE);
-
-        } else {
-            // Make the progress bar invisible.
-            ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.search_progress_bar);
-            progressBar.setVisibility(View.INVISIBLE);
-        }
-
         // Add footer for dynamic loading.
         addLoadingFooter(inflater, mItemsListView);
 
         // Setup list view listeners.
         mItemsListView.setOnScrollListener(new AbsListView.OnScrollListener() {
 
+            private boolean mScrolled;
+
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-                // Do nothing...
+                if (scrollState == SCROLL_STATE_TOUCH_SCROLL) {
+                    mScrolled = true;
+                }
             }
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 
-                if (mItemPaginator != null && firstVisibleItem + visibleItemCount == totalItemCount) {
+                if (mScrolled && firstVisibleItem + visibleItemCount == totalItemCount) {
                     mItemPaginator.loadNextPage();
                 }
             }
@@ -176,15 +166,11 @@ public class SearchItemsFragment extends AbstractFragment implements Paginator.C
             mListViewFooter.findViewById(R.id.list_view_footer_progress_bar).setVisibility(View.GONE);
         }
 
-        ListView itemsListView = (ListView) getView().findViewById(R.id.items_list_view);
-        ProgressBar progressBar = (ProgressBar) getView().findViewById(R.id.search_progress_bar);
-        TextView searchResultsCountTextView = (TextView) getView().findViewById(R.id.search_results_count_text_view);
-
         updateSearchResultsCount(getView());
 
-        itemsListView.setVisibility(View.VISIBLE);
-        progressBar.setVisibility(View.GONE);
-        searchResultsCountTextView.setVisibility(View.VISIBLE);
+        // Make progress bar container appear.
+        View progressBarContainer = getView().findViewById(R.id.search_progress_bar_container);
+        progressBarContainer.setVisibility(View.GONE);
     }
 
     @Override

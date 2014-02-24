@@ -48,7 +48,6 @@ public class ItemsActivity extends AbstractActivity implements SearchItemsFragme
     private void search(String query) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.template_container, SearchItemsFragment.newInstance(query.trim()));
-        //transaction.addToBackStack(null);
         transaction.commit();
     }
 
