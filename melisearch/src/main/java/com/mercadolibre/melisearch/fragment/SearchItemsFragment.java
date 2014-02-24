@@ -82,7 +82,7 @@ public class SearchItemsFragment extends AbstractFragment implements Paginator.C
         mItemPaginator.setPaginatorCallbacks(this);
 
         if (savedInstanceState == null) {
-            loadNextPage();
+            mItemPaginator.loadNextPage();
         } else {
             mItemPaginator.restoreInstanceState(savedInstanceState);
             updateSearchResultsCount(getView());
@@ -141,7 +141,7 @@ public class SearchItemsFragment extends AbstractFragment implements Paginator.C
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 
                 if (mItemPaginator != null && firstVisibleItem + visibleItemCount == totalItemCount) {
-                    loadNextPage();
+                    mItemPaginator.loadNextPage();
                 }
             }
         });
@@ -158,25 +158,6 @@ public class SearchItemsFragment extends AbstractFragment implements Paginator.C
         });
 
         return view;
-    }
-
-    private void loadNextPage() {
-
-        if (mItemPaginator.hasMorePages() && !mItemPaginator.isLoadingPage()) {
-
-            // Check connectivity.
-            ConnectivityManager connMgr = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-            if (networkInfo != null && networkInfo.isConnected()) {
-                if (mListViewFooter != null) {
-                    mListViewFooter.findViewById(R.id.list_view_footer_progress_bar).setVisibility(View.VISIBLE);
-                }
-
-                mItemPaginator.loadNextPage();
-            } else {
-                Toast.makeText(getActivity(), R.string.no_connectivity, Toast.LENGTH_SHORT).show();
-            }
-        }
     }
 
     private void updateSearchResultsCount(View rootView) {
